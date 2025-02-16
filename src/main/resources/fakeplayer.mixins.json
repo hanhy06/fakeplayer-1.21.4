@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "com.hanhy06.fakeplayer.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ClientConnectionAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

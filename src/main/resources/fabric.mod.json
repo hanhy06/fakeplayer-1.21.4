@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "fakeplayer",
+	"version": "${version}",
+	"name": "FakePlayer",
+	"description": "fake player",
+	"authors": [
+		"hanhy06"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/fakeplayer/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.hanhy06.fakeplayer.FakePlayer"
+		],
+		"fabric-datagen": [
+			"com.hanhy06.fakeplayer.FakePlayerDataGenerator"
+		]
+	},
+	"mixins": [
+		"fakeplayer.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
