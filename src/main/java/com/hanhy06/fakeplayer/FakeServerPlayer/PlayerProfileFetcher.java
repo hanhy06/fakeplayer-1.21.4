@@ -36,7 +36,7 @@ public class PlayerProfileFetcher {
     public static JsonObject getPlayerSkin(String playerName) {
         try {
             HttpRequest skinRequest = HttpRequest.newBuilder()
-                    .uri(URI.create("https://sessionserver.mojang.com/session/minecraft/profile/" + getPlayerUuid(playerName)))
+                    .uri(URI.create("https://sessionserver.mojang.com/session/minecraft/profile/" + getPlayerUuid(playerName) + "?unsigned=false"))
                     .GET()  // HTTP GET 방식 요청
                     .build();
 
@@ -58,17 +58,19 @@ public class PlayerProfileFetcher {
         JsonObject object = getPlayerSkin(profile.getName());
         JsonArray array = object.getAsJsonArray("properties");
 
-        String data =null;
+        String value =null;
+        String signature = null;
 
         for(JsonElement element :array){
             JsonObject temp = element.getAsJsonObject();
 
             if ("textures".equals(temp.get("name").getAsString())) {
-                data = temp.get("value").getAsString();
+                value = temp.get("value").getAsString();
+                signature = temp.get("signature").getAsString();
             }
         }
 
-        Property property = new Property("textures",data);
+        Property property = new Property("textures",value,signature);
         profile.getProperties().put("textures",property);
     }
 }
