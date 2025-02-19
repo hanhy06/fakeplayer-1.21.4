@@ -4,13 +4,24 @@ import com.hanhy06.fakeplayer.FakeServerPlayer.FakeClientConnection;
 import com.hanhy06.fakeplayer.FakeServerPlayer.FakeServerPlayer;
 import com.hanhy06.fakeplayer.FakeServerPlayer.PlayerProfileFetcher;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.PropertyMap;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.client.data.PropertiesMap;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
+import net.minecraft.particle.ParticlesMode;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,23 +37,24 @@ public class FakePlayer implements ModInitializer {
 		ServerWorldEvents.LOAD.register(
 				(minecraftServer, serverWorld) -> {
 					if(serverWorld.getRegistryKey()== World.OVERWORLD){
-						GameProfile profile = new GameProfile(UUID.randomUUID(),"hanhy06");
+						GameProfile profile = new GameProfile(UUID.randomUUID(),"dorong1972");
                         PlayerProfileFetcher.applySkinFromGameProfile(profile);
 
-						PropertyMap map = profile.getProperties();
+                        FakeServerPlayer player = new FakeServerPlayer(minecraftServer,minecraftServer.getOverworld(),profile);
 
-                        FakeServerPlayer player = new FakeServerPlayer(minecraftServer,minecraftServer.getOverworld(),profile, SyncedClientOptions.createDefault());
-						minecraftServer.getPlayerManager().onPlayerConnect(FakeClientConnection.SERVER_FAKE_CONNECTION,player,ConnectedClientData.createDefault(profile,false));
+						PlayerManager manager = minecraftServer.getPlayerManager();
+
+						manager.onPlayerConnect(FakeClientConnection.SERVER_FAKE_CONNECTION,player,ConnectedClientData.createDefault(profile,false));
 					}
 				}
 		);
 
-//		ServerPlayConnectionEvents.JOIN.register(
-//				(serverPlayNetworkHandler, packetSender, minecraftServer) -> {
-//					GameProfile profile = serverPlayNetworkHandler.getPlayer().getGameProfile();
-//					PropertyMap map = profile.getProperties();
-//					Collection<Property> textures = map.get("textures");
-//				}
-//		);
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+			if(entity instanceof FakeServerPlayer){
+				PlayerManager manager= entity.getServer().getPlayerManager();
+
+				manager.respawnPlayer((FakeServerPlayer) entity,false, Entity.RemovalReason.DISCARDED);
+			}
+		});
 	}
-}
+};
