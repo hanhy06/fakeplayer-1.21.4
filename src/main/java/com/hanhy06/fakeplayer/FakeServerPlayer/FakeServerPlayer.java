@@ -1,7 +1,6 @@
 package com.hanhy06.fakeplayer.FakeServerPlayer;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
@@ -31,6 +30,5 @@ public class FakeServerPlayer extends ServerPlayerEntity {
     public void sleep(BlockPos pos) {
         super.sleep(pos);
     }
-
 
 }

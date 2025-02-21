@@ -3,7 +3,8 @@
 	"package": "com.hanhy06.fakeplayer.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ClientConnectionAccessor"
+		"ClientConnectionAccessor",
+		"PlayerManagerAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

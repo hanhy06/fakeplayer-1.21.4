@@ -6,7 +6,6 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 
 public class FakeClientConnection extends ClientConnection {
-
     public static final FakeClientConnection SERVER_FAKE_CONNECTION = new FakeClientConnection(NetworkSide.SERVERBOUND);
 
     public FakeClientConnection(NetworkSide side) {
