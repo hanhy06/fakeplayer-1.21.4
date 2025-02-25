@@ -1,6 +1,11 @@
 package com.hanhy06.fakeplayer.FakeServerPlayer;
 
+import com.hanhy06.fakeplayer.FakePlayer;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BedBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.message.ChatVisibility;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
@@ -11,6 +16,11 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class FakeServerPlayer extends ServerPlayerEntity {
     public FakeServerPlayer(MinecraftServer server, ServerWorld world, GameProfile profile, SyncedClientOptions clientOptions) {
@@ -28,7 +38,8 @@ public class FakeServerPlayer extends ServerPlayerEntity {
 
     @Override
     public void sleep(BlockPos pos) {
-        super.sleep(pos);
+        this.setPose(EntityPose.SLEEPING);
+        this.setSleepingPosition(pos);
+        this.setVelocity(Vec3d.ZERO);
     }
-
 }
